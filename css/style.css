@@ -1,0 +1,830 @@
+/* =========================================================
+   ექიმთან დიალოგი — მთავარი სტილები
+   საქართველოს გინეკოლოგთა და რეპროდუქტოლოგთა ასოციაცია
+   ========================================================= */
+
+/* ---------- 1. დიზაინის ტოკენები ---------- */
+:root {
+  /* ფონები */
+  --bg:            #faf6f1;
+  --bg-warm:       #f4ece3;
+  --surface:       #ffffff;
+  --surface-alt:   #fdfaf6;
+
+  /* ბრენდის ფერები */
+  --teal:          #1f6f6b;
+  --teal-dark:     #17534f;
+  --teal-light:    #2f8f88;
+  --coral:         #e0705a;
+  --coral-dark:    #c95a44;
+  --coral-soft:    #f2a08d;
+
+  /* ტექსტი */
+  --text:          #23302f;
+  --text-muted:    #5d6b6a;
+  --text-soft:     #82908f;
+
+  /* ხაზები და ჩრდილები */
+  --line:          #e6ddd2;
+  --line-soft:     #efe7dd;
+  --shadow-sm:     0 1px 3px rgba(35, 48, 47, .06);
+  --shadow:        0 4px 16px rgba(35, 48, 47, .07);
+  --shadow-lg:     0 12px 36px rgba(35, 48, 47, .10);
+
+  /* რადიუსები */
+  --r-sm:  10px;
+  --r:     16px;
+  --r-lg:  24px;
+  --r-xl:  32px;
+
+  /* ტიპოგრაფია */
+  --font-display: 'Noto Serif Georgian', Georgia, serif;
+  --font-body:    'Noto Sans Georgian', -apple-system, 'Segoe UI', sans-serif;
+
+  /* განლაგება */
+  --wrap: 1280px;
+  --gutter: 32px;
+  --header-h: 84px;
+}
+
+/* ---------- 2. საბაზისო ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+p { margin: 0; }
+
+a { color: inherit; text-decoration: none; }
+
+img { max-width: 100%; display: block; }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+ul { list-style: none; margin: 0; padding: 0; }
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ხელმისაწვდომობა: მხოლოდ ეკრანის წამკითხველისთვის */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* კლავიატურის ფოკუსი */
+:focus-visible {
+  outline: 3px solid var(--teal-light);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* გამოტოვე ნავიგაცია */
+.skip-link {
+  position: absolute;
+  top: -100px; left: 16px;
+  z-index: 200;
+  background: var(--teal);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 0 0 var(--r-sm) var(--r-sm);
+  font-size: .9rem;
+  transition: top .2s;
+}
+.skip-link:focus { top: 0; }
+
+
+/* ---------- 3. ჰედერი ---------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250, 246, 241, .88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .25s, box-shadow .25s, background .25s;
+}
+.header.is-stuck {
+  border-bottom-color: var(--line);
+  box-shadow: var(--shadow-sm);
+  background: rgba(250, 246, 241, .96);
+}
+
+.header__inner {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+/* --- ლოგო --- */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  flex-shrink: 0;
+}
+/* ლოგოს JPEG-ს თეთრი ფონი აქვს — multiply მას ქაღალდისფერში ხსნის */
+.brand__mark {
+  width: 68px; height: 68px;
+  flex-shrink: 0;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+.brand__text {
+  font-size: .74rem;
+  line-height: 1.35;
+  color: var(--teal);
+  font-weight: 600;
+  max-width: 220px;
+  letter-spacing: .005em;
+}
+
+/* --- ნავიგაცია --- */
+.nav { margin-inline: auto; }
+.nav__list { display: flex; align-items: center; gap: 4px; }
+
+.nav__link {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+  font-size: .93rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-radius: var(--r-sm);
+  transition: color .2s, background .2s;
+  white-space: nowrap;
+}
+.nav__link:hover { color: var(--teal); background: rgba(31,111,107,.06); }
+
+/* აქტიური გვერდის ხაზი */
+.nav__link[aria-current="page"] { color: var(--teal); font-weight: 600; }
+.nav__link[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 15px; right: 15px; bottom: 2px;
+  height: 2.5px;
+  background: var(--coral);
+  border-radius: 2px;
+}
+
+/* --- ჰედერის მოქმედებები --- */
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  width: 42px; height: 42px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  color: var(--text-muted);
+  transition: background .2s, color .2s;
+}
+.icon-btn:hover { background: rgba(31,111,107,.08); color: var(--teal); }
+
+/* ენის გადამრთველი */
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 9px 12px;
+  border-radius: var(--r-sm);
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--text);
+  transition: background .2s;
+}
+.lang:hover { background: rgba(31,111,107,.08); }
+.lang svg { transition: transform .2s; }
+.lang[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+/* ბურგერი — მხოლოდ მობილურზე */
+.burger { display: none; }
+
+
+/* ---------- 4. ჰერო ---------- */
+.hero {
+  position: relative;
+  padding-top: 40px;
+  padding-bottom: 72px;
+  overflow: hidden;
+}
+
+/* თბილი ფონის ლაქა მარჯვნივ */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -40%; right: -12%;
+  width: 62vw; height: 130%;
+  background: radial-gradient(ellipse at 40% 50%, var(--bg-warm) 0%, transparent 68%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.02fr;
+  gap: 56px;
+  align-items: center;
+}
+
+/* --- ჰეროს ტექსტი --- */
+.hero__title {
+  font-size: clamp(3rem, 6.4vw, 5.6rem);
+  font-weight: 500;
+  color: var(--teal);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin-bottom: 30px;
+}
+.hero__title span { display: block; }
+
+/* ხაზგასმული ქვესათაური */
+.hero__lead {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.hero__lead::before {
+  content: "";
+  width: 42px; height: 2.5px;
+  background: var(--coral);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.hero__lead span {
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  color: var(--teal);
+  font-weight: 500;
+}
+
+.hero__text {
+  font-size: 1.02rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  max-width: 470px;
+  margin-bottom: 36px;
+}
+
+/* --- CTA ღილაკი --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 17px 32px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: transform .2s, box-shadow .2s, background .2s;
+}
+.btn--primary {
+  background: var(--coral);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(224,112,90,.32);
+}
+.btn--primary:hover {
+  background: var(--coral-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(224,112,90,.4);
+}
+.btn__arrow { transition: transform .25s; }
+.btn:hover .btn__arrow { transform: translateX(5px); }
+
+/* --- ჰეროს სურათი --- */
+.hero__media { position: relative; }
+
+/* ორგანული "ფოთლის" ფორმა — მოქნილი კუთხეები */
+.hero__photo {
+  position: relative;
+  aspect-ratio: 4 / 3.15;
+  border-radius: 300px 300px 26px 26px / 200px 200px 26px 26px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(135deg, #dfe9e4 0%, #cfe0da 55%, #c2d6d0 100%);
+}
+.hero__photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  /* კადრირებისას ექიმი ჩარჩოში რჩება */
+  object-position: 42% center;
+}
+
+/* ჩამნაცვლებელი — სანამ ნამდვილ ფოტოს ჩასვამთ */
+.ph {
+  position: absolute; inset: 0;
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  text-align: center;
+  color: var(--teal);
+  padding: 24px;
+}
+.ph__icon { opacity: .34; }
+.ph__label {
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  opacity: .55;
+  max-width: 210px;
+  line-height: 1.5;
+}
+
+/* --- მოლივლივე სამედიცინო ბეჯი --- */
+.badge {
+  position: absolute;
+  left: -78px; bottom: 22px;
+  width: 186px; height: 186px;
+  border-radius: 50%;
+  background: var(--surface-alt);
+  border: 1px solid var(--line-soft);
+  box-shadow: var(--shadow-lg);
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 22px;
+  animation: float 6s ease-in-out infinite;
+}
+.badge__text {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--teal);
+  font-weight: 500;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-13px); }
+}
+
+
+/* ---------- 5. კატეგორიების ბარათები ---------- */
+.cats {
+  position: relative;
+  z-index: 2;
+  padding-bottom: 76px;
+}
+
+.cats__panel {
+  background: var(--bg-warm);
+  border-radius: var(--r-xl);
+  padding: 34px;
+}
+
+.cats__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+
+/* --- ერთი ბარათი --- */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  /* overflow აქ არ ვსვამთ — ხატულა ბარათის კიდეს კვეთს */
+  box-shadow: var(--shadow-sm);
+  transition: transform .28s cubic-bezier(.4,0,.2,1), box-shadow .28s;
+}
+.card:hover {
+  transform: translateY(-7px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ბარათის სურათი */
+.card__media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+}
+.card__media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .5s cubic-bezier(.4,0,.2,1);
+}
+.card:hover .card__media img { transform: scale(1.07); }
+
+/* ბარათის ხატულა — გადაფარებული */
+.card__icon {
+  position: absolute;
+  left: 16px; bottom: -22px;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(35,48,47,.2);
+  z-index: 4;
+}
+
+.card__body {
+  position: relative;
+  z-index: 1;
+  background: var(--surface);
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+  padding: 34px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 14px;
+}
+.card__title {
+  font-family: var(--font-body);
+  font-size: .93rem;
+  font-weight: 600;
+  color: var(--teal);
+  line-height: 1.4;
+}
+.card__arrow {
+  margin-top: auto;
+  align-self: flex-end;
+  color: var(--coral);
+  transition: transform .25s;
+}
+.card:hover .card__arrow { transform: translateX(5px); }
+
+/* მთელი ბარათი დასაჭერია, ფოკუსიც სწორად მუშაობს */
+.card__link::after { content: ""; position: absolute; inset: 0; z-index: 3; }
+.card:focus-within { box-shadow: var(--shadow-lg); }
+
+
+/* ---------- 6. ექიმებისთვის ---------- */
+.docs { padding-bottom: 84px; }
+
+.docs__panel {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) 2.1fr;
+  gap: 48px;
+  align-items: center;
+  background: var(--teal-dark);
+  border-radius: var(--r-xl);
+  padding: 44px 48px;
+  box-shadow: var(--shadow);
+}
+
+/* --- მარცხენა მხარე --- */
+.docs__title {
+  font-size: clamp(1.7rem, 2.6vw, 2.2rem);
+  color: #fff;
+  margin-bottom: 8px;
+}
+.docs__sub {
+  font-size: .96rem;
+  font-weight: 600;
+  color: var(--coral-soft);
+  margin-bottom: 16px;
+}
+.docs__text {
+  font-size: .9rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,.66);
+  margin-bottom: 28px;
+  max-width: 300px;
+}
+
+/* ღია ღილაკი მუქ ფონზე */
+.btn--light {
+  background: var(--surface);
+  color: var(--teal-dark);
+  box-shadow: 0 4px 14px rgba(0,0,0,.16);
+  padding: 14px 26px;
+  font-size: .93rem;
+}
+.btn--light:hover {
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0,0,0,.22);
+}
+
+/* --- მარჯვენა მხარე: რესურსები --- */
+.docs__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.docs__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 22px 12px;
+  border-radius: var(--r);
+  height: 100%;
+  transition: background .22s, transform .22s;
+}
+.docs__link:hover {
+  background: rgba(255,255,255,.07);
+  transform: translateY(-3px);
+}
+
+.docs__icon { color: #fff; opacity: .93; }
+
+.docs__name {
+  font-family: var(--font-body);
+  font-size: .92rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.35;
+  /* ორი ხაზის სიმაღლე — აღწერები ერთ დონეზე ჩერდება */
+  min-height: calc(2 * 1.35em);
+  display: flex;
+  align-items: center;
+}
+.docs__desc {
+  font-size: .8rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,.58);
+}
+
+
+/* ---------- 7. ფუტერი ---------- */
+.footer {
+  background: var(--teal-dark);
+  color: rgba(255,255,255,.82);
+  padding: 60px 0 28px;
+}
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1.3fr;
+  gap: 44px;
+  padding-bottom: 40px;
+}
+.footer__brand-text {
+  font-size: .88rem;
+  line-height: 1.5;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 14px;
+  max-width: 260px;
+}
+.footer__about {
+  font-size: .86rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,.62);
+  max-width: 290px;
+}
+.footer__head {
+  font-family: var(--font-body);
+  font-size: .82rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: .07em;
+  margin-bottom: 18px;
+}
+.footer__list li { margin-bottom: 11px; }
+.footer__list a {
+  font-size: .88rem;
+  color: rgba(255,255,255,.68);
+  transition: color .2s;
+}
+.footer__list a:hover { color: #fff; }
+
+.footer__contact {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  font-size: .88rem;
+  color: rgba(255,255,255,.68);
+  margin-bottom: 13px;
+  line-height: 1.55;
+}
+.footer__contact svg { flex-shrink: 0; margin-top: 3px; opacity: .75; }
+.footer__contact a:hover { color: #fff; }
+
+.footer__socials { display: flex; gap: 10px; margin-top: 20px; }
+.footer__social {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.09);
+  display: grid; place-items: center;
+  color: #fff;
+  transition: background .2s, transform .2s;
+}
+.footer__social:hover { background: var(--coral); transform: translateY(-2px); }
+
+.footer__bottom {
+  border-top: 1px solid rgba(255,255,255,.13);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: .8rem;
+  color: rgba(255,255,255,.5);
+}
+
+
+/* ---------- 8. გამოჩენის ანიმაცია ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .65s cubic-bezier(.4,0,.2,1), transform .65s cubic-bezier(.4,0,.2,1);
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+
+
+/* =========================================================
+   9. რესპონსიული — ტაბლეტი და მობილური
+   ========================================================= */
+
+/* --- დიდი ტაბლეტი: ნავიგაცია ვიწროვდება --- */
+@media (max-width: 1180px) {
+  :root { --gutter: 24px; }
+  .nav__link { padding: 10px 11px; font-size: .87rem; }
+  .brand__text { font-size: .68rem; max-width: 180px; }
+  .cats__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* --- ტაბლეტი: ბურგერი ჩნდება --- */
+@media (max-width: 940px) {
+  :root { --header-h: 74px; }
+
+  .burger {
+    display: grid;
+    place-items: center;
+    width: 44px; height: 44px;
+    border-radius: var(--r-sm);
+    color: var(--teal);
+  }
+  .burger:hover { background: rgba(31,111,107,.08); }
+
+  /* .nav ხდება fixed და ფლექსიდან გამოდის —
+     ამიტომ მოქმედებებს ხელით ვაწვდით მარჯვენა კიდეში */
+  .header__actions { margin-left: auto; }
+
+  /* ნავიგაცია გადადის გვერდით პანელში */
+  .nav {
+    position: fixed;
+    inset: var(--header-h) 0 auto 0;
+    margin: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    box-shadow: var(--shadow-lg);
+    padding: 14px var(--gutter) 22px;
+    transform: translateY(-14px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .25s, transform .25s, visibility .25s;
+    max-height: calc(100vh - var(--header-h));
+    overflow-y: auto;
+  }
+  .nav.is-open { opacity: 1; transform: none; visibility: visible; }
+
+  .nav__list { flex-direction: column; align-items: stretch; gap: 2px; }
+  .nav__link {
+    padding: 15px 14px;
+    font-size: 1rem;
+    border-radius: var(--r-sm);
+  }
+  .nav__link[aria-current="page"]::after { left: 14px; right: auto; width: 22px; bottom: 8px; }
+
+  /* ჰერო ერთ სვეტად */
+  .hero__grid { grid-template-columns: 1fr; gap: 44px; }
+  .hero__text { max-width: none; }
+  .hero::before { display: none; }
+  .hero__photo { border-radius: 150px 24px 24px 24px; }
+
+  .badge {
+    left: auto; right: 16px; bottom: -34px;
+    width: 152px; height: 152px;
+    padding: 16px;
+  }
+  .badge__text { font-size: .86rem; }
+  .badge svg { width: 30px; height: 30px; }
+
+  .hero { padding-bottom: 84px; }
+
+  /* ექიმებისთვის — ვერტიკალურად */
+  .docs__panel {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    padding: 38px 34px;
+  }
+  .docs__text { max-width: none; }
+  .docs__grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .docs__link { padding: 18px 8px; }
+
+  .footer__grid { grid-template-columns: repeat(2, 1fr); gap: 36px; }
+}
+
+/* --- მობილური --- */
+@media (max-width: 620px) {
+  :root { --gutter: 18px; }
+
+  body { font-size: 15px; }
+
+  .brand__mark { width: 54px; height: 54px; }
+
+  /* მობილურზე გრძელი სახელი 2 ხაზზე ვიწროვდება */
+  .brand__text {
+    font-size: .6rem;
+    line-height: 1.3;
+    max-width: 132px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ძებნა იმალება — ბურგერს ვტოვებთ */
+  .header__actions .icon-btn { display: none; }
+
+  .hero { padding-top: 26px; padding-bottom: 76px; }
+  .hero__title { font-size: clamp(2.6rem, 12.5vw, 3.6rem); }
+  .hero__lead::before { width: 26px; }
+  .hero__lead { gap: 11px; margin-bottom: 18px; }
+  .hero__photo { border-radius: 110px 20px 20px 20px; aspect-ratio: 4 / 3.6; }
+
+  .btn { width: 100%; justify-content: center; padding: 16px 26px; }
+
+  .badge {
+    right: 8px; bottom: -30px;
+    width: 124px; height: 124px;
+    padding: 12px; gap: 7px;
+  }
+  .badge__text { font-size: .72rem; line-height: 1.45; }
+  .badge svg { width: 25px; height: 25px; }
+
+  /* ბარათები — 2 სვეტი */
+  .cats__panel { padding: 18px; border-radius: var(--r-lg); }
+  .cats__grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .card__body { padding: 30px 13px 14px; gap: 10px; }
+  .card__title { font-size: .84rem; }
+  .card__icon { width: 40px; height: 40px; left: 13px; bottom: -19px; }
+
+  /* ექიმებისთვის — 2 სვეტი */
+  .docs__panel { padding: 30px 22px; border-radius: var(--r-lg); gap: 26px; }
+  .docs__grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .docs__link { padding: 18px 10px; gap: 9px; }
+  .docs__name { font-size: .86rem; }
+  .docs__desc { font-size: .75rem; }
+  .docs__icon svg { width: 26px; height: 26px; }
+
+  .footer { padding-top: 46px; }
+  .footer__grid { grid-template-columns: 1fr; gap: 32px; }
+  .footer__bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
+
+/* --- ძალიან ვიწრო --- */
+@media (max-width: 380px) {
+  .cats__grid { grid-template-columns: 1fr; }
+  .brand__text { display: none; }
+}
+
+
+/* ---------- 10. მოძრაობის შემცირება ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* ---------- 11. ბეჭდვა ---------- */
+@media print {
+  .header, .footer__socials, .btn, .badge { display: none; }
+  body { background: #fff; }
+  .reveal { opacity: 1; transform: none; }
+}
