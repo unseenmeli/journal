@@ -25,10 +25,13 @@ Opening `index.html` directly via `file://` works too, but use the server —
 
 ```
 index.html        homepage (all content, in Georgian)
-ask.html          კითხვა ექიმს — question form (UI done, storage not wired)
+ask.html          კითხვა ექიმს — question form (connected to Supabase)
+questionarySECR.html   private questions panel (unlisted URL, no auth yet)
 css/style.css     design tokens + all styles, numbered sections
 js/main.js        mobile menu, sticky header, scroll reveal
-js/ask.js         form validation + submit hook for ask.html
+js/ask.js         form validation + Supabase insert for ask.html
+js/panel.js       questions panel: tabs, search, read-tracking
+js/config.js      Supabase URL + publishable key
 js/db.js          Supabase data layer — NOT yet wired into index.html
 assets/img/       photos go here (see below)
 ```
@@ -252,7 +255,41 @@ Behaviour already built:
 - `role="status"` live region announces errors and success to screen readers
 - 112 emergency notice, so the form is not mistaken for urgent care
 
-### Wiring up storage
+### ✅ Supabase — already connected
+
+Project: `cxthvlxjsgbgeqmsdbtf.supabase.co`. Credentials live in **`js/config.js`**
+(the publishable key — formerly called the anon key — is public by design and safe
+in browser code).
+
+Verified working end-to-end: form submit → row in `questions` → appears in
+`questionarySECR.html` → read checkmark writes `is_read` back.
+
+To clear test data, run in the SQL Editor:
+
+```sql
+delete from questions;
+alter sequence questions_id_seq restart with 1;
+```
+
+### ⚠️ Security state — read before going live
+
+There is **no authentication**, by choice. That means, for anyone who has or guesses
+the page URL and reads the key out of the page source:
+
+- every patient question, name and phone number is readable
+- anyone can insert questions (spam) and flip `is_read`
+
+Deletes are currently blocked (no delete policy exists) — that part is right, and
+worth keeping that way.
+
+This is acceptable for local testing. Before this is served on a public domain with
+real patient data, add Supabase Auth: one login page, then change the select/update
+policies from `to anon` to `to authenticated`. Roughly a 30-minute change.
+
+`questionarySECR.html` sends `noindex, nofollow` so search engines will not list it,
+but that stops crawlers, not people.
+
+### Old notes on wiring up storage
 
 Open `js/ask.js` and find `sendToBackend(data)` — it currently just `console.log`s
 the payload and resolves after 700ms. Replace the body with a real request; the
@@ -293,7 +330,7 @@ could post to it. Add a shared secret and rate limiting if spam becomes an issue
 ## Still to build
 
 - inner pages (ჩვენ შესახებ, სტატიები, ინტერვიუ, კონტაქტი) — `კითხვა ექიმს` is done
-- connect `ask.html` to real storage (see above)
+- add Supabase Auth before going live (see security note above)
 - the doctors' section (`.docs`) links to `#` — point the four items and the
   "მესტუმრე ექიმებისთვის" button at the professional pages once they exist
 - the search button and the KA/EN language switcher are styled but inert

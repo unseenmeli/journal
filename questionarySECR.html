@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>კითხვების პანელი</title>
+
+<!-- საძიებო სისტემებმა არ უნდა დააინდექსონ -->
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="referrer" content="no-referrer">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Georgian:wght@400..700&family=Noto+Sans+Georgian:wght@400..700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/jpeg" href="assets/img/logo-160.jpg">
+</head>
+
+<body class="panel-body">
+
+<a class="skip-link" href="#main">გადადი მთავარ შიგთავსზე</a>
+
+<!-- ══════════ პანელის ჰედერი ══════════ -->
+<header class="panel-head">
+  <div class="wrap panel-head__inner">
+    <a class="brand" href="index.html" aria-label="მთავარი გვერდი">
+      <img class="brand__mark"
+           src="assets/img/logo-160.jpg"
+           srcset="assets/img/logo-160.jpg 1x, assets/img/logo-320.jpg 2x"
+           width="160" height="160" alt="" aria-hidden="true" decoding="async">
+      <span class="panel-head__title">კითხვების პანელი</span>
+    </a>
+
+    <button class="icon-btn panel-head__refresh" type="button" id="refreshBtn" aria-label="განახლება">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 11a8 8 0 1 0-.9 4.5"/><path d="M20 5v6h-6"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+
+<main id="main" class="panel">
+  <div class="wrap">
+
+    <!-- ═══ ტაბები ═══ -->
+    <div class="tabs" role="tablist" aria-label="კითხვების ფილტრი">
+      <button class="tab is-active" role="tab" id="tab-new"
+              aria-selected="true" aria-controls="panel-new" type="button">
+        კითხვები
+        <span class="tab__count" id="countNew">0</span>
+      </button>
+      <button class="tab" role="tab" id="tab-done"
+              aria-selected="false" aria-controls="panel-done" type="button" tabindex="-1">
+        პასუხგაცემული
+        <span class="tab__count" id="countDone">0</span>
+      </button>
+    </div>
+
+    <!-- ძებნა -->
+    <div class="panel-search">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+      </svg>
+      <input type="search" id="searchBox" class="panel-search__input"
+             placeholder="ძებნა სახელით, ნომრით ან ტექსტით…" aria-label="კითხვების ძებნა">
+    </div>
+
+    <!-- ═══ სია ═══ -->
+    <div role="tabpanel" id="panel-new" aria-labelledby="tab-new">
+      <ul class="qlist" id="qlist"></ul>
+
+      <!-- ცარიელი მდგომარეობა -->
+      <div class="empty" id="emptyBox" hidden>
+        <span class="empty__icon" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v8a2.5 2.5 0 0 1-2.5 2.5H9l-4.4 3.4A.4.4 0 0 1 4 20V17a1 1 0 0 1-1-1z"/>
+          </svg>
+        </span>
+        <p class="empty__text" id="emptyText">კითხვები ჯერ არ არის.</p>
+      </div>
+
+      <!-- ჩატვირთვა -->
+      <div class="loading" id="loadingBox">
+        <span class="spinner" aria-hidden="true"></span>
+        <p>იტვირთება…</p>
+      </div>
+    </div>
+
+    <p class="sr-only" role="status" aria-live="polite" id="panelStatus"></p>
+
+  </div>
+</main>
+
+
+<!-- ══════════ კითხვის დეტალები (მოდალი) ══════════ -->
+<div class="modal" id="modal" hidden>
+  <div class="modal__backdrop" id="modalBackdrop"></div>
+
+  <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+    <div class="modal__head">
+      <div>
+        <p class="modal__id" id="modalId">QN00</p>
+        <h2 class="modal__name" id="modalTitle">—</h2>
+      </div>
+      <button class="icon-btn" type="button" id="modalClose" aria-label="დახურვა">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal__meta">
+      <a class="modal__chip" id="modalPhone" href="#">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+          <path d="M6.5 3.5h-2a2 2 0 0 0-2 2C2.5 13.5 10.5 21.5 18.5 21.5a2 2 0 0 0 2-2v-2l-4.5-2-2 2.5c-2.5-1.2-4.8-3.5-6-6l2.5-2z"/>
+        </svg>
+        <span id="modalPhoneText">—</span>
+      </a>
+      <span class="modal__chip modal__chip--plain" id="modalCat" hidden></span>
+      <span class="modal__chip modal__chip--plain" id="modalDate">—</span>
+    </div>
+
+    <div class="modal__body">
+      <p class="modal__label">კითხვა</p>
+      <p class="modal__question" id="modalQuestion">—</p>
+    </div>
+
+    <div class="modal__foot">
+      <label class="check">
+        <input class="check__box" type="checkbox" id="readCheck">
+        <span class="check__mark" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m5 12.5 5 5L19 7"/>
+          </svg>
+        </span>
+        <span class="check__text">პასუხგაცემულად მონიშვნა</span>
+      </label>
+    </div>
+
+  </div>
+</div>
+
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+
+      <div>
+        <p class="footer__brand-text">საქართველოს რეპროდუქციული და სქესობრივი ჯანმრთელობის ასოციაცია</p>
+        <p class="footer__about">
+          „ექიმთან დიალოგი“ არის ასოციაციის საგანმანათლებლო პლატფორმა,
+          რომელიც აქვეყნებს სანდო სამედიცინო ინფორმაციას ფართო საზოგადოებისთვის.
+        </p>
+        <div class="footer__socials">
+          <a class="footer__social" href="#" aria-label="ფეისბუქი">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M14 8.5V7c0-.8.2-1.2 1.4-1.2H17V3h-2.6C11.5 3 10.5 4.4 10.5 6.8v1.7H8.5V11h2v10H14V11h2.3l.4-2.5z"/>
+            </svg>
+          </a>
+          <a class="footer__social" href="#" aria-label="ინსტაგრამი">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+              <rect x="3.5" y="3.5" width="17" height="17" rx="5"/>
+              <circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1.1" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <a class="footer__social" href="#" aria-label="იუთუბი">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <nav aria-labelledby="f-nav">
+        <h2 class="footer__head" id="f-nav">ნავიგაცია</h2>
+        <ul class="footer__list">
+          <li><a href="#">მთავარი</a></li>
+          <li><a href="#">ჩვენ შესახებ</a></li>
+          <li><a href="#">სტატიები</a></li>
+          <li><a href="#">ინტერვიუ</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-labelledby="f-cat">
+        <h2 class="footer__head" id="f-cat">მიმართულებები</h2>
+        <ul class="footer__list">
+          <li><a href="#">ქალთა ჯანმრთელობა</a></li>
+          <li><a href="#">ორსულობა</a></li>
+          <li><a href="#">სექსობრივი ჯანმრთელობა</a></li>
+          <li><a href="#">ქირურგია</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <h2 class="footer__head">კონტაქტი</h2>
+
+        <p class="footer__contact">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 7 9 6 9-6"/>
+          </svg>
+          <a href="mailto:asanidzeelene@yahoo.com">asanidzeelene@yahoo.com</a>
+        </p>
+
+        <p class="footer__contact">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M6.5 3.5h-2a2 2 0 0 0-2 2C2.5 13.5 10.5 21.5 18.5 21.5a2 2 0 0 0 2-2v-2l-4.5-2-2 2.5c-2.5-1.2-4.8-3.5-6-6l2.5-2z"/>
+          </svg>
+          <a href="tel:+995599109195" dir="ltr">+995 599 109 195</a>
+        </p>
+
+        <p class="footer__contact">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M12 21.5s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10.5" r="2.6"/>
+          </svg>
+          თბილისი, საქართველო
+        </p>
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <p>© <span id="year">2026</span> საქართველოს რეპროდუქციული და სქესობრივი ჯანმრთელობის ასოციაცია. ყველა უფლება დაცულია.</p>
+      <p>ინფორმაცია არ ცვლის ექიმთან კონსულტაციას.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/panel.js"></script>
+</body>
+</html>

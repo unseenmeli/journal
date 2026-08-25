@@ -1,9 +1,8 @@
 /* =========================================================
    კითხვა ექიმს — ფორმის ლოგიკა
    ---------------------------------------------------------
-   ვალიდაცია და ინტერფეისი მზადაა.
-   მონაცემების გაგზავნა ჯერ არ არის ჩართული — იხილეთ
-   sendToBackend() ფუნქცია ქვემოთ.
+   ვალიდაცია, ინტერფეისი და Supabase-ში გაგზავნა.
+   კონფიგურაცია: js/config.js
    ========================================================= */
 (function () {
   'use strict';
@@ -114,29 +113,28 @@
   /* ---------- 4. გაგზავნა ---------- */
 
   /**
-   * მონაცემების გაგზავნა სერვერზე.
-   *
-   * ჯერ არ არის ჩართული — ამჟამად მხოლოდ კონსოლში ბეჭდავს.
-   * იხილეთ SETUP.md → "კითხვების შენახვა".
-   *
-   * @param {Object} data — ფორმის მონაცემები
-   * @returns {Promise}
+   * მონაცემების გაგზავნა Supabase-ში.
+   * კონფიგურაცია: js/config.js
    */
   function sendToBackend(data) {
-    console.log('[ask] გასაგზავნი მონაცემები:', data);
+    if (!window.supabase || !window.SUPABASE_URL ||
+        window.SUPABASE_URL.indexOf('PASTE_') === 0) {
+      return Promise.reject(new Error('Supabase არ არის კონფიგურირებული (js/config.js)'));
+    }
 
-    // TODO: აქ ჩაანაცვლეთ ნამდვილი გაგზავნით, მაგალითად:
-    // return fetch(ENDPOINT, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(data)
-    // }).then(function (r) {
-    //   if (!r.ok) throw new Error('HTTP ' + r.status);
-    //   return r.json();
-    // });
+    var client = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
 
-    // დროებით: ვაჩვენებთ, რომ გაგზავნა "მოხდა"
-    return new Promise(function (resolve) { setTimeout(resolve, 700); });
+    return client.from('questions').insert({
+      first_name: data.firstName,
+      last_name:  data.lastName,
+      phone:      data.phone,
+      category:   data.category || null,
+      question:   data.question
+    }).then(function (res) {
+      // Supabase შეცდომას აბრუნებს res.error-ში და არა throw-ით
+      if (res.error) throw res.error;
+      return res;
+    });
   }
 
   form.addEventListener('submit', function (e) {
@@ -181,7 +179,9 @@
       .catch(function (err) {
         console.error('[ask] გაგზავნა ვერ მოხერხდა:', err);
         statusEl.textContent = 'გაგზავნა ვერ მოხერხდა.';
-        alertInline('გაგზავნა ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა.');
+        alertInline('გაგზავნა ვერ მოხერხდა: ' +
+                    (err && err.message ? err.message : 'უცნობი შეცდომა') +
+                    '. გთხოვთ, სცადოთ ხელახლა.');
       })
       .then(function () {
         submitBtn.disabled = false;
