@@ -259,6 +259,20 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 
 /* --- ჰეროს ტექსტი --- */
+
+/* გამომცემლის კრედიტი სათაურის ზემოთ */
+.hero__eyebrow {
+  font-size: .8rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text-soft);
+  /* ქართული უნიკამერულია — uppercase აზრს მოკლებულია;
+     იერარქიას ინტერვალი და ზომა ქმნის */
+  letter-spacing: .06em;
+  max-width: 400px;
+  margin-bottom: 18px;
+}
+
 .hero__title {
   font-size: clamp(3rem, 6.4vw, 5.6rem);
   font-weight: 500;
@@ -272,29 +286,25 @@ ul { list-style: none; margin: 0; padding: 0; }
 /* ხაზგასმული ქვესათაური */
 .hero__lead {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
-  margin-bottom: 22px;
+  margin-bottom: 36px;
+  max-width: 500px;
 }
+/* ხაზი პირველ სტრიქონზე ისწორება, არა ცენტრში */
 .hero__lead::before {
   content: "";
   width: 42px; height: 2.5px;
   background: var(--coral);
   border-radius: 2px;
   flex-shrink: 0;
+  margin-top: .72em;
 }
 .hero__lead span {
-  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  font-size: clamp(1rem, 1.35vw, 1.14rem);
+  line-height: 1.55;
   color: var(--teal);
   font-weight: 500;
-}
-
-.hero__text {
-  font-size: 1.02rem;
-  color: var(--text-muted);
-  line-height: 1.75;
-  max-width: 470px;
-  margin-bottom: 36px;
 }
 
 /* --- CTA ღილაკი --- */
@@ -719,7 +729,6 @@ ul { list-style: none; margin: 0; padding: 0; }
 
   /* ჰერო ერთ სვეტად */
   .hero__grid { grid-template-columns: 1fr; gap: 44px; }
-  .hero__text { max-width: none; }
   .hero::before { display: none; }
   .hero__photo { border-radius: 150px 24px 24px 24px; }
 
@@ -771,7 +780,13 @@ ul { list-style: none; margin: 0; padding: 0; }
   .hero { padding-top: 26px; padding-bottom: 76px; }
   .hero__title { font-size: clamp(2.6rem, 12.5vw, 3.6rem); }
   .hero__lead::before { width: 26px; }
-  .hero__lead { gap: 11px; margin-bottom: 18px; }
+  .hero__lead { gap: 11px; margin-bottom: 28px; }
+  .hero__eyebrow {
+    font-size: .68rem;
+    letter-spacing: .03em;
+    margin-bottom: 12px;
+    max-width: none;
+  }
   .hero__photo { border-radius: 110px 20px 20px 20px; aspect-ratio: 4 / 3.6; }
 
   .btn { width: 100%; justify-content: center; padding: 16px 26px; }
@@ -827,4 +842,404 @@ ul { list-style: none; margin: 0; padding: 0; }
   .header, .footer__socials, .btn, .badge { display: none; }
   body { background: #fff; }
   .reveal { opacity: 1; transform: none; }
+}
+
+
+/* =========================================================
+   12. კითხვა ექიმს — ask.html
+   ========================================================= */
+
+/* ---------- გვერდის სათაური ---------- */
+.page-head {
+  padding-top: 44px;
+  padding-bottom: 40px;
+}
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: .82rem;
+  color: var(--text-soft);
+  margin-bottom: 18px;
+}
+.crumbs a { transition: color .2s; }
+.crumbs a:hover { color: var(--teal); }
+.crumbs [aria-current] { color: var(--teal); font-weight: 600; }
+
+.page-title {
+  font-size: clamp(2.2rem, 4.4vw, 3.4rem);
+  font-weight: 500;
+  color: var(--teal);
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+.page-sub {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 520px;
+}
+
+
+/* ---------- განლაგება ---------- */
+.ask { padding-bottom: 84px; }
+
+.ask__grid {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 34px;
+  align-items: start;
+}
+
+.ask__panel {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg);
+  padding: 36px;
+  box-shadow: var(--shadow-sm);
+}
+
+
+/* ---------- ფორმა ---------- */
+
+/* display: flex სჯობნის [hidden]-ის ნაგულისხმევ display: none-ს —
+   ამიტომ ყველა flex/grid ელემენტს ცალკე ვუთითებთ */
+.form[hidden], .sent[hidden] { display: none; }
+
+.form { display: flex; flex-direction: column; gap: 22px; }
+
+/* ორი ველი გვერდიგვერდ */
+.form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.field { display: flex; flex-direction: column; gap: 8px; }
+
+.field__label {
+  font-size: .89rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.req { color: var(--coral); }
+
+.field__input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: .95rem;
+  color: var(--text);
+  background: var(--surface-alt);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 13px 15px;
+  transition: border-color .2s, background .2s, box-shadow .2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.field__input::placeholder { color: var(--text-soft); opacity: .75; }
+
+.field__input:hover { border-color: #d8cec1; }
+
+.field__input:focus {
+  outline: none;
+  background: var(--surface);
+  border-color: var(--teal-light);
+  box-shadow: 0 0 0 3px rgba(47,143,136,.14);
+}
+
+/* შეცდომის მდგომარეობა */
+.field__input[aria-invalid="true"] {
+  border-color: var(--coral);
+  background: #fdf3f1;
+}
+.field__input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(224,112,90,.16);
+}
+
+.field__hint {
+  font-size: .78rem;
+  color: var(--text-soft);
+}
+
+/* [hidden]-ს display: flex სჯობნის — ცალკე უნდა დაიფაროს */
+.field__err[hidden] { display: none; }
+
+.field__err {
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--coral-dark);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.field__err::before {
+  content: "";
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--coral);
+  /* ძახილის ნიშანი SVG-ით, რომ ფონტზე არ იყოს დამოკიდებული */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 6v8M12 17.2v.2' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 6v8M12 17.2v.2' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* --- ტელეფონი პრეფიქსით --- */
+.field__phone { position: relative; display: flex; align-items: center; }
+.field__prefix {
+  position: absolute;
+  left: 15px;
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  pointer-events: none;
+  z-index: 1;
+}
+.field__input--phone { padding-left: 62px; letter-spacing: .04em; }
+
+/* --- select --- */
+.field__select { position: relative; }
+.field__select .field__input { padding-right: 42px; cursor: pointer; }
+.field__caret {
+  position: absolute;
+  right: 15px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* --- textarea --- */
+.field__textarea {
+  resize: vertical;
+  min-height: 150px;
+  line-height: 1.65;
+}
+
+.field__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 18px;
+}
+.field__meta .field__err { margin-right: auto; }
+.field__count {
+  font-size: .76rem;
+  color: var(--text-soft);
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+.field__count.is-near { color: var(--coral-dark); font-weight: 600; }
+
+
+/* ---------- ჩექბოქსი ---------- */
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+}
+/* ნამდვილი input ვიზუალურად იმალება, მაგრამ ფოკუსირებადი რჩება */
+.check__box {
+  position: absolute;
+  opacity: 0;
+  width: 22px; height: 22px;
+  margin: 0;
+  cursor: pointer;
+}
+.check__mark {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  margin-top: 1px;
+  border: 1.5px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface-alt);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  transition: background .18s, border-color .18s, transform .18s;
+}
+.check__mark svg { opacity: 0; transform: scale(.6); transition: opacity .18s, transform .18s; }
+
+.check:hover .check__mark { border-color: var(--teal-light); }
+
+.check__box:checked + .check__mark {
+  background: var(--teal);
+  border-color: var(--teal);
+}
+.check__box:checked + .check__mark svg { opacity: 1; transform: none; }
+
+.check__box:focus-visible + .check__mark {
+  outline: 3px solid var(--teal-light);
+  outline-offset: 3px;
+}
+.check__box[aria-invalid="true"] + .check__mark { border-color: var(--coral); }
+
+.check__text {
+  font-size: .87rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+
+/* ---------- გაგზავნა ---------- */
+.form__submit {
+  align-self: flex-start;
+  margin-top: 4px;
+}
+.form__submit[disabled] {
+  opacity: .62;
+  cursor: not-allowed;
+  transform: none;
+}
+.form__submit[disabled]:hover { background: var(--coral); box-shadow: none; }
+
+.form__note {
+  font-size: .8rem;
+  line-height: 1.65;
+  color: var(--text-soft);
+  border-top: 1px solid var(--line-soft);
+  padding-top: 18px;
+}
+.form__note a { color: var(--coral-dark); font-weight: 600; }
+.form__note a:hover { text-decoration: underline; }
+
+
+/* ---------- გაგზავნის შემდეგ ---------- */
+.sent {
+  text-align: center;
+  padding: 26px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.sent__icon {
+  width: 68px; height: 68px;
+  border-radius: 50%;
+  background: rgba(47,143,136,.12);
+  color: var(--teal);
+  display: grid;
+  place-items: center;
+  margin-bottom: 4px;
+}
+.sent__title { font-size: 1.5rem; color: var(--teal); }
+.sent__text {
+  font-size: .95rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 380px;
+}
+.btn--outline {
+  background: transparent;
+  color: var(--teal);
+  border: 1.5px solid var(--line);
+  padding: 13px 26px;
+  font-size: .93rem;
+  margin-top: 6px;
+}
+.btn--outline:hover {
+  border-color: var(--teal);
+  background: rgba(31,111,107,.05);
+  transform: translateY(-2px);
+}
+
+
+/* ---------- გვერდითი ბარათები ---------- */
+.ask__side { display: flex; flex-direction: column; gap: 18px; }
+
+.side-card {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg);
+  padding: 26px;
+}
+.side-card--soft {
+  background: var(--bg-warm);
+  border-color: transparent;
+}
+.side-card__icon {
+  display: grid;
+  place-items: center;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.75);
+  color: var(--teal);
+  margin-bottom: 14px;
+}
+.side-card__title {
+  font-family: var(--font-body);
+  font-size: .96rem;
+  font-weight: 700;
+  color: var(--teal);
+  margin-bottom: 16px;
+}
+.side-card--soft .side-card__title { margin-bottom: 8px; }
+.side-card__text {
+  font-size: .86rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* --- ნაბიჯები --- */
+.steps { display: flex; flex-direction: column; gap: 18px; }
+.steps__item { display: flex; gap: 13px; align-items: flex-start; }
+.steps__num {
+  flex-shrink: 0;
+  width: 27px; height: 27px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #fff;
+  font-size: .8rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+.steps__name {
+  font-family: var(--font-body);
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+.steps__text {
+  font-size: .81rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+
+/* ---------- რესპონსიული ---------- */
+@media (max-width: 940px) {
+  .ask__grid { grid-template-columns: 1fr; gap: 24px; }
+  .ask__panel { padding: 28px; }
+
+  /* გვერდითი ბარათები ქვემოთ, ორ სვეტად */
+  .ask__side {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .ask__side > * { flex: 1 1 260px; }
+}
+
+@media (max-width: 620px) {
+  .page-head { padding-top: 28px; padding-bottom: 26px; }
+
+  .ask__panel {
+    padding: 22px 18px;
+    border-radius: var(--r);
+  }
+
+  /* სახელი და გვარი ერთმანეთის ქვემოთ */
+  .form__row { grid-template-columns: 1fr; gap: 22px; }
+
+  .form { gap: 20px; }
+  .form__submit { align-self: stretch; }
+
+  /* iOS-ზე 16px-ზე ნაკლები ფონტი ავტომატურ ზუმს იწვევს */
+  .field__input { font-size: 16px; }
+
+  .ask__side { flex-direction: column; }
+  .side-card { padding: 22px; }
 }

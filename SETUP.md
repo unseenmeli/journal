@@ -25,8 +25,10 @@ Opening `index.html` directly via `file://` works too, but use the server —
 
 ```
 index.html        homepage (all content, in Georgian)
+ask.html          კითხვა ექიმს — question form (UI done, storage not wired)
 css/style.css     design tokens + all styles, numbered sections
 js/main.js        mobile menu, sticky header, scroll reveal
+js/ask.js         form validation + submit hook for ask.html
 js/db.js          Supabase data layer — NOT yet wired into index.html
 assets/img/       photos go here (see below)
 ```
@@ -229,9 +231,69 @@ Already in place, worth preserving when editing:
 - decorative SVGs marked `aria-hidden="true"`; meaningful buttons have `aria-label`
 - `prefers-reduced-motion` disables the float and reveal animations
 
+---
+
+## კითხვა ექიმს — `ask.html`
+
+The question form page. UI, validation, and states are complete; **storage is not
+wired up yet**.
+
+Fields: `firstName`, `lastName`, `phone` (required), `category` (optional),
+`question` (required), `consent` (required).
+
+Behaviour already built:
+
+- Georgian inline validation, shown on blur and cleared as you type
+- phone auto-formats to `5XX XX XX XX` and validates as a 9-digit Georgian mobile
+  starting with `5`; submitted normalised to E.164 (`+995599123456`)
+- 1500-char counter that turns coral near the limit
+- submit button locks during send to prevent double submission
+- success card replaces the form, with a "კიდევ ერთი კითხვა" reset
+- `role="status"` live region announces errors and success to screen readers
+- 112 emergency notice, so the form is not mistaken for urgent care
+
+### Wiring up storage
+
+Open `js/ask.js` and find `sendToBackend(data)` — it currently just `console.log`s
+the payload and resolves after 700ms. Replace the body with a real request; the
+commented-out `fetch` in that function shows the shape.
+
+`data` looks like:
+
+```json
+{
+  "firstName": "ნინო",
+  "lastName":  "ბერიძე",
+  "phone":     "+995599123456",
+  "category":  "ორსულობა",
+  "question":  "...",
+  "createdAt": "2026-08-25T21:31:35.098Z"
+}
+```
+
+**Important:** a browser page cannot write to an Excel file (or a OneDrive
+spreadsheet) directly — there is no endpoint to POST to and no safe way to hold a
+credential in front-end JavaScript, since anything shipped to the browser is public.
+Something server-side has to receive the POST and do the writing. Options, cheapest
+first:
+
+1. **Microsoft Power Automate** — an "When an HTTP request is received" trigger plus
+   an "Add a row into a table" action against the OneDrive workbook. Gives you a URL
+   to paste into `sendToBackend`, no server to run. Best fit if the sheet must stay
+   on OneDrive.
+2. **Google Sheets + Apps Script** — same idea if the sheet can live in Google Sheets;
+   `doPost(e)` deployed as a web app.
+3. **Supabase** (already scaffolded in `js/db.js`) — store questions in Postgres and
+   export to Excel when needed. The right choice if the messaging system is still
+   planned, since a spreadsheet cannot support doctor↔patient replies.
+
+Note that with 1 and 2, the endpoint URL is visible in the page source, so anyone
+could post to it. Add a shared secret and rate limiting if spam becomes an issue.
+
 ## Still to build
 
-- inner pages (ჩვენ შესახებ, სტატიები, ინტერვიუ, კითხვა ექიმს, კონტაქტი)
+- inner pages (ჩვენ შესახებ, სტატიები, ინტერვიუ, კონტაქტი) — `კითხვა ექიმს` is done
+- connect `ask.html` to real storage (see above)
 - the doctors' section (`.docs`) links to `#` — point the four items and the
   "მესტუმრე ექიმებისთვის" button at the professional pages once they exist
 - the search button and the KA/EN language switcher are styled but inert

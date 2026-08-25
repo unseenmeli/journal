@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>კითხვა ექიმს — ექიმთან დიალოგი</title>
+<meta name="description" content="დაუსვით კითხვა საქართველოს რეპროდუქციული და სქესობრივი ჯანმრთელობის ასოციაციის ექიმებს. პასუხს მიიღებთ კონფიდენციალურად.">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ka_GE">
+<meta property="og:title" content="კითხვა ექიმს — ექიმთან დიალოგი">
+<meta name="theme-color" content="#1f6f6b">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Georgian:wght@400..700&family=Noto+Sans+Georgian:wght@400..700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/jpeg" href="assets/img/logo-160.jpg">
+<link rel="apple-touch-icon" href="assets/img/logo-320.jpg">
+</head>
+
+<body>
+
+<a class="skip-link" href="#main">გადადი მთავარ შიგთავსზე</a>
+
+<header class="header" id="header">
+  <div class="wrap header__inner">
+
+    <!-- ლოგო -->
+    <a class="brand" href="index.html" aria-label="ექიმთან დიალოგი — მთავარი გვერდი">
+      <img class="brand__mark"
+           src="assets/img/logo-160.jpg"
+           srcset="assets/img/logo-160.jpg 1x, assets/img/logo-320.jpg 2x"
+           width="160" height="160"
+           alt=""
+           aria-hidden="true"
+           decoding="async">
+      <span class="brand__text">საქართველოს რეპროდუქციული და სქესობრივი ჯანმრთელობის ასოციაცია</span>
+    </a>
+
+    <!-- ნავიგაცია -->
+    <nav class="nav" id="nav" aria-label="მთავარი ნავიგაცია">
+      <ul class="nav__list">
+        <li><a class="nav__link" href="index.html">მთავარი</a></li>
+        <li><a class="nav__link" href="#">ჩვენ შესახებ</a></li>
+        <li><a class="nav__link" href="#">სტატიები</a></li>
+        <li><a class="nav__link" href="#">ინტერვიუ</a></li>
+        <li><a class="nav__link" href="ask.html" aria-current="page">კითხვა ექიმს</a></li>
+        <li><a class="nav__link" href="#">კონტაქტი</a></li>
+      </ul>
+    </nav>
+
+    <!-- მოქმედებები -->
+    <div class="header__actions">
+      <button class="icon-btn" type="button" aria-label="ძებნა">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+        </svg>
+      </button>
+
+      <button class="lang" type="button" aria-expanded="false" aria-label="ენის შეცვლა. მიმდინარე ენა: ქართული">
+        KA
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+          <path d="m6 9 6 6 6-6"/>
+        </svg>
+      </button>
+
+      <button class="burger" id="burger" type="button" aria-label="მენიუს გახსნა" aria-expanded="false" aria-controls="nav">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+
+<main id="main">
+
+<!-- ══════════ გვერდის სათაური ══════════ -->
+<section class="page-head">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="ნავიგაციის გზა">
+      <a href="index.html">მთავარი</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">კითხვა ექიმს</span>
+    </nav>
+
+    <h1 class="page-title">კითხვა ექიმს</h1>
+    <p class="page-sub">
+      დაუსვით კითხვა ასოციაციის სერტიფიცირებულ ექიმებს.
+      პასუხს მიიღებთ კონფიდენციალურად, მითითებულ ნომერზე.
+    </p>
+  </div>
+</section>
+
+
+<!-- ══════════ ფორმა + გვერდითი ინფო ══════════ -->
+<section class="ask">
+  <div class="wrap ask__grid">
+
+    <!-- ფორმა -->
+    <div class="ask__panel">
+
+      <form class="form" id="askForm" novalidate>
+
+        <div class="form__row">
+          <!-- სახელი -->
+          <div class="field">
+            <label class="field__label" for="firstName">
+              სახელი <span class="req" aria-hidden="true">*</span>
+            </label>
+            <input class="field__input" type="text" id="firstName" name="firstName"
+                   autocomplete="given-name" required
+                   aria-describedby="err-firstName" placeholder="მაგ. ნინო">
+            <p class="field__err" id="err-firstName" hidden></p>
+          </div>
+
+          <!-- გვარი -->
+          <div class="field">
+            <label class="field__label" for="lastName">
+              გვარი <span class="req" aria-hidden="true">*</span>
+            </label>
+            <input class="field__input" type="text" id="lastName" name="lastName"
+                   autocomplete="family-name" required
+                   aria-describedby="err-lastName" placeholder="მაგ. ბერიძე">
+            <p class="field__err" id="err-lastName" hidden></p>
+          </div>
+        </div>
+
+        <!-- ტელეფონი -->
+        <div class="field">
+          <label class="field__label" for="phone">
+            ტელეფონის ნომერი <span class="req" aria-hidden="true">*</span>
+          </label>
+          <div class="field__phone">
+            <span class="field__prefix" aria-hidden="true">+995</span>
+            <input class="field__input field__input--phone" type="tel" id="phone" name="phone"
+                   inputmode="tel" autocomplete="tel-national" required
+                   maxlength="11"
+                   aria-describedby="hint-phone err-phone" placeholder="5XX XX XX XX">
+          </div>
+          <p class="field__hint" id="hint-phone">პასუხს ამ ნომერზე მიიღებთ.</p>
+          <p class="field__err" id="err-phone" hidden></p>
+        </div>
+
+        <!-- მიმართულება -->
+        <div class="field">
+          <label class="field__label" for="category">მიმართულება</label>
+          <div class="field__select">
+            <select class="field__input" id="category" name="category">
+              <option value="">აირჩიეთ (არასავალდებულო)</option>
+              <option>ქალთა ჯანმრთელობა</option>
+              <option>რეპროდუქციული ჯანმრთელობა</option>
+              <option>ორსულობა</option>
+              <option>სექსობრივი ჯანმრთელობა</option>
+              <option>ბავშვთა და მოზარდთა ჯანმრთელობა</option>
+              <option>ქირურგია</option>
+              <option>სხვა</option>
+            </select>
+            <svg class="field__caret" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- კითხვა -->
+        <div class="field">
+          <label class="field__label" for="question">
+            თქვენი კითხვა <span class="req" aria-hidden="true">*</span>
+          </label>
+          <textarea class="field__input field__textarea" id="question" name="question"
+                    rows="7" required maxlength="1500"
+                    aria-describedby="count-question err-question"
+                    placeholder="აღწერეთ თქვენი კითხვა რაც შეიძლება დეტალურად — ეს დაეხმარება ექიმს ზუსტი პასუხის გაცემაში."></textarea>
+          <div class="field__meta">
+            <p class="field__err" id="err-question" hidden></p>
+            <p class="field__count" id="count-question"><span id="qCount">0</span>/1500</p>
+          </div>
+        </div>
+
+        <!-- თანხმობა -->
+        <div class="field">
+          <label class="check">
+            <input class="check__box" type="checkbox" id="consent" name="consent" required
+                   aria-describedby="err-consent">
+            <span class="check__mark" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m5 12.5 5 5L19 7"/>
+              </svg>
+            </span>
+            <span class="check__text">
+              ვეთანხმები, რომ ჩემი მონაცემები დამუშავდეს კითხვაზე პასუხის
+              გასაცემად. <span class="req" aria-hidden="true">*</span>
+            </span>
+          </label>
+          <p class="field__err" id="err-consent" hidden></p>
+        </div>
+
+        <!-- გაგზავნა -->
+        <button class="btn btn--primary form__submit" type="submit" id="submitBtn">
+          <span class="form__submit-label">კითხვის გაგზავნა</span>
+          <svg class="btn__arrow" width="19" height="19" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+               stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </button>
+
+        <p class="form__note">
+          გთხოვთ, გადაუდებელი შემთხვევისას დაუყოვნებლივ დარეკოთ
+          <a href="tel:112">112</a>-ზე. ეს ფორმა არ არის სასწრაფო დახმარების არხი.
+        </p>
+
+        <!-- ეკრანის წამკითხველისთვის — ცოცხალი სტატუსი -->
+        <p class="sr-only" role="status" aria-live="polite" id="formStatus"></p>
+      </form>
+
+      <!-- წარმატების ეკრანი -->
+      <div class="sent" id="sentBox" hidden>
+        <span class="sent__icon" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m5 12.5 5 5L19 7"/>
+          </svg>
+        </span>
+        <h2 class="sent__title">კითხვა გაიგზავნა</h2>
+        <p class="sent__text">
+          გმადლობთ! თქვენი კითხვა მიღებულია. ექიმი დაგიკავშირდებათ
+          მითითებულ ნომერზე უახლოეს სამუშაო დღეებში.
+        </p>
+        <button class="btn btn--outline" type="button" id="againBtn">კიდევ ერთი კითხვა</button>
+      </div>
+
+    </div>
+
+    <!-- გვერდითი ინფო -->
+    <aside class="ask__side">
+
+      <div class="side-card">
+        <h2 class="side-card__title">როგორ მუშაობს</h2>
+        <ol class="steps">
+          <li class="steps__item">
+            <span class="steps__num">1</span>
+            <div>
+              <h3 class="steps__name">შეავსეთ ფორმა</h3>
+              <p class="steps__text">მიუთითეთ სახელი, ნომერი და დასვით კითხვა.</p>
+            </div>
+          </li>
+          <li class="steps__item">
+            <span class="steps__num">2</span>
+            <div>
+              <h3 class="steps__name">ექიმი გაეცნობა</h3>
+              <p class="steps__text">კითხვას განიხილავს პროფილის შესაბამისი სპეციალისტი.</p>
+            </div>
+          </li>
+          <li class="steps__item">
+            <span class="steps__num">3</span>
+            <div>
+              <h3 class="steps__name">მიიღებთ პასუხს</h3>
+              <p class="steps__text">დაგიკავშირდებით მითითებულ ნომერზე.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="side-card side-card--soft">
+        <span class="side-card__icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2.5 4.5 5.8v5.4c0 4.6 3.2 8.9 7.5 10.3 4.3-1.4 7.5-5.7 7.5-10.3V5.8z"/>
+            <path d="m9 12 2.2 2.2L15.5 10"/>
+          </svg>
+        </span>
+        <h2 class="side-card__title">კონფიდენციალურობა</h2>
+        <p class="side-card__text">
+          თქვენი მონაცემები ხელმისაწვდომია მხოლოდ პასუხის გამცემი ექიმისთვის
+          და არ ქვეყნდება საჯაროდ.
+        </p>
+      </div>
+
+    </aside>
+
+  </div>
+</section>
+
+</main>
+
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+
+      <div>
+        <p class="footer__brand-text">საქართველოს რეპროდუქციული და სქესობრივი ჯანმრთელობის ასოციაცია</p>
+        <p class="footer__about">
+          „ექიმთან დიალოგი“ არის ასოციაციის საგანმანათლებლო პლატფორმა,
+          რომელიც აქვეყნებს სანდო სამედიცინო ინფორმაციას ფართო საზოგადოებისთვის.
+        </p>
+        <div class="footer__socials">
+          <a class="footer__social" href="#" aria-label="ფეისბუქი">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M14 8.5V7c0-.8.2-1.2 1.4-1.2H17V3h-2.6C11.5 3 10.5 4.4 10.5 6.8v1.7H8.5V11h2v10H14V11h2.3l.4-2.5z"/>
+            </svg>
+          </a>
+          <a class="footer__social" href="#" aria-label="ინსტაგრამი">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+              <rect x="3.5" y="3.5" width="17" height="17" rx="5"/>
+              <circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1.1" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <a class="footer__social" href="#" aria-label="იუთუბი">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <nav aria-labelledby="f-nav">
+        <h2 class="footer__head" id="f-nav">ნავიგაცია</h2>
+        <ul class="footer__list">
+          <li><a href="index.html">მთავარი</a></li>
+          <li><a href="#">ჩვენ შესახებ</a></li>
+          <li><a href="#">სტატიები</a></li>
+          <li><a href="#">ინტერვიუ</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-labelledby="f-cat">
+        <h2 class="footer__head" id="f-cat">მიმართულებები</h2>
+        <ul class="footer__list">
+          <li><a href="#">ქალთა ჯანმრთელობა</a></li>
+          <li><a href="#">ორსულობა</a></li>
+          <li><a href="#">სექსობრივი ჯანმრთელობა</a></li>
+          <li><a href="#">ქირურგია</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <h2 class="footer__head">კონტაქტი</h2>
+
+        <p class="footer__contact">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 7 9 6 9-6"/>
+          </svg>
+          <a href="mailto:asanidzeelene@yahoo.com">asanidzeelene@yahoo.com</a>
+        </p>
+
+        <p class="footer__contact">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M6.5 3.5h-2a2 2 0 0 0-2 2C2.5 13.5 10.5 21.5 18.5 21.5a2 2 0 0 0 2-2v-2l-4.5-2-2 2.5c-2.5-1.2-4.8-3.5-6-6l2.5-2z"/>
+          </svg>
+          <a href="tel:+995599109195" dir="ltr">+995 599 109 195</a>
+        </p>
+
+        <p class="footer__contact">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M12 21.5s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10.5" r="2.6"/>
+          </svg>
+          თბილისი, საქართველო
+        </p>
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <p>© <span id="year">2026</span> საქართველოს რეპროდუქციული და სქესობრივი ჯანმრთელობის ასოციაცია. ყველა უფლება დაცულია.</p>
+      <p>ინფორმაცია არ ცვლის ექიმთან კონსულტაციას.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/ask.js"></script>
+</body>
+</html>
