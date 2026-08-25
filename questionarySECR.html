@@ -22,8 +22,46 @@
 
 <a class="skip-link" href="#main">გადადი მთავარ შიგთავსზე</a>
 
+<!-- ══════════ შესვლის ეკრანი ══════════ -->
+<div class="gate" id="gate">
+  <div class="gate__box">
+
+    <img class="gate__logo"
+         src="assets/img/logo-160.jpg"
+         srcset="assets/img/logo-160.jpg 1x, assets/img/logo-320.jpg 2x"
+         width="160" height="160" alt="" aria-hidden="true">
+
+    <h1 class="gate__title">კითხვების პანელი</h1>
+    <p class="gate__sub">შესასვლელად მიუთითეთ მონაცემები</p>
+
+    <form class="gate__form" id="gateForm" novalidate>
+
+      <div class="field">
+        <label class="field__label" for="user">მომხმარებელი</label>
+        <input class="field__input" type="text" id="user" name="user"
+               autocomplete="username" autocapitalize="none" spellcheck="false"
+               required aria-describedby="gateErr">
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="pass">პაროლი</label>
+        <input class="field__input" type="password" id="pass" name="pass"
+               autocomplete="current-password" required aria-describedby="gateErr">
+      </div>
+
+      <p class="field__err" id="gateErr" hidden></p>
+
+      <button class="btn btn--primary gate__btn" type="submit" id="gateBtn">
+        <span id="gateBtnLabel">შესვლა</span>
+      </button>
+
+    </form>
+  </div>
+</div>
+
+
 <!-- ══════════ პანელის ჰედერი ══════════ -->
-<header class="panel-head">
+<header class="panel-head" id="panelHead" hidden>
   <div class="wrap panel-head__inner">
     <a class="brand" href="index.html" aria-label="მთავარი გვერდი">
       <img class="brand__mark"
@@ -33,17 +71,29 @@
       <span class="panel-head__title">კითხვების პანელი</span>
     </a>
 
-    <button class="icon-btn panel-head__refresh" type="button" id="refreshBtn" aria-label="განახლება">
+    <div class="panel-head__right">
+      <span class="panel-head__user" id="whoami"></span>
+
+      <button class="icon-btn panel-head__refresh" type="button" id="refreshBtn" aria-label="განახლება">
       <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M20 11a8 8 0 1 0-.9 4.5"/><path d="M20 5v6h-6"/>
       </svg>
-    </button>
+      </button>
+
+      <button class="icon-btn" type="button" id="logoutBtn" aria-label="გასვლა">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <path d="M16 17l5-5-5-5M21 12H9"/>
+        </svg>
+      </button>
+    </div>
   </div>
 </header>
 
 
-<main id="main" class="panel">
+<main id="main" class="panel" hidden>
   <div class="wrap">
 
     <!-- ═══ ტაბები ═══ -->
@@ -151,7 +201,7 @@
 </div>
 
 
-<footer class="footer">
+<footer class="footer" id="panelFooter" hidden>
   <div class="wrap">
     <div class="footer__grid">
 
@@ -237,6 +287,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/config.js"></script>
+<script src="js/gate.js"></script>
 <script src="js/panel.js"></script>
 </body>
 </html>

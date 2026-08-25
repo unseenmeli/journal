@@ -31,6 +31,7 @@ css/style.css     design tokens + all styles, numbered sections
 js/main.js        mobile menu, sticky header, scroll reveal
 js/ask.js         form validation + Supabase insert for ask.html
 js/panel.js       questions panel: tabs, search, read-tracking
+js/gate.js        admin login screen for questionarySECR.html
 js/config.js      Supabase URL + publishable key
 js/db.js          Supabase data layer — NOT yet wired into index.html
 assets/img/       photos go here (see below)
@@ -271,7 +272,70 @@ delete from questions;
 alter sequence questions_id_seq restart with 1;
 ```
 
+### Admin login on `questionarySECR.html`
+
+The panel is hidden behind a login screen. Admin accounts live in an `admins` table;
+passwords are stored as SHA-256 hashes, never in plaintext.
+
+Run once in the SQL Editor:
+
+```sql
+create table admins (
+  id           bigint generated always as identity primary key,
+  username     text not null unique,
+  pass_hash    text not null,
+  display_name text,
+  is_active    boolean not null default true,
+  created_at   timestamptz not null default now()
+);
+
+alter table admins enable row level security;
+
+create policy "anon can read admins" on admins
+  for select to anon using (true);
+```
+
+Then add users (these two are examples — change the passwords):
+
+```sql
+insert into admins (username, pass_hash, display_name) values
+  ('elene', 'ba56133c69bda763c31b7b2cd1ea3df272dae66b202facc6c061b24713073c1c', 'ელენე ასანიძე'),
+  ('davit', '6051fc84a7a0d74c225fb18a496b09952da5642e60723ecae543298edd7d82d6', 'დავით ასანიძე');
+```
+
+`elene` → `garsh2026`, `davit` → `admin2026`.
+
+**To add another admin or change a password**, generate the hash first:
+
+```bash
+printf '%s' 'YOUR_PASSWORD' | shasum -a 256
+```
+
+then `insert into admins ...` or
+`update admins set pass_hash = '<hash>' where username = '<name>';`
+
+To disable someone without deleting them:
+`update admins set is_active = false where username = '<name>';`
+
+Login lasts 8 hours (stored in `localStorage`), and the logout button in the panel
+header clears it. The panel fetches no data until login succeeds.
+
 ### ⚠️ Security state — read before going live
+
+**The login screen is not real authentication.** The check happens in the browser, so
+anyone who opens devtools can read the publishable key and query `questions` directly,
+bypassing the login entirely. The `admins` table is also readable, which exposes
+usernames and password hashes to offline cracking — so use passwords that are not
+reused anywhere else.
+
+What it does do: stop a casual visitor who lands on the URL from seeing patient data.
+That is real, but limited, value.
+
+For genuine protection, replace this with **Supabase Auth**: create the users under
+Authentication → Users, swap `gate.js` for `client.auth.signInWithPassword()`, and
+change the `questions` policies from `to anon` to `to authenticated`. The database
+then enforces access itself, and no amount of devtools poking gets around it. That is
+the change to make before this holds real patient data on a public domain.
 
 There is **no authentication**, by choice. That means, for anyone who has or guesses
 the page URL and reads the key out of the page source:
@@ -281,10 +345,6 @@ the page URL and reads the key out of the page source:
 
 Deletes are currently blocked (no delete policy exists) — that part is right, and
 worth keeping that way.
-
-This is acceptable for local testing. Before this is served on a public domain with
-real patient data, add Supabase Auth: one login page, then change the select/update
-policies from `to anon` to `to authenticated`. Roughly a 30-minute change.
 
 `questionarySECR.html` sends `noindex, nofollow` so search engines will not list it,
 but that stops crawlers, not people.

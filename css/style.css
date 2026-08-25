@@ -1603,3 +1603,90 @@ a.modal__chip:hover { background: #e8dccd; }
   }
   @keyframes slideUp { from { transform: translateY(100%); } }
 }
+
+
+/* =========================================================
+   14. შესვლის ეკრანი — questionarySECR.html
+   ========================================================= */
+
+body.is-locked { overflow: hidden; }
+
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: var(--bg-warm);
+  overflow-y: auto;
+}
+.gate[hidden] { display: none; }
+
+.gate__box {
+  width: 100%;
+  max-width: 380px;
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 38px 32px;
+  text-align: center;
+  animation: pop .25s cubic-bezier(.4,0,.2,1);
+}
+
+.gate__logo {
+  width: 74px; height: 74px;
+  margin: 0 auto 18px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.gate__title {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.gate__sub {
+  font-size: .85rem;
+  color: var(--text-muted);
+  margin-bottom: 26px;
+}
+
+/* ველები მარცხნივ, სათაური ცენტრში */
+.gate__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.gate__btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 6px;
+}
+.gate__btn[disabled] { opacity: .62; cursor: not-allowed; }
+
+/* ---------- ჰედერის მარჯვენა ნაწილი ---------- */
+.panel-head__right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.panel-head__user {
+  font-size: .84rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-right: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+@media (max-width: 620px) {
+  .gate__box { padding: 30px 22px; }
+  .panel-head__user { display: none; }
+}

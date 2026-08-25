@@ -317,7 +317,9 @@
     setTimeout(function () { refreshBtn.classList.remove('is-spinning'); }, 700);
   });
 
-  /* ---------- გაშვება ---------- */
-  load();
+  /* ---------- გაშვება ----------
+     ჩატვირთვას იწყებს gate.js შესვლის შემდეგ,
+     რომ მონაცემები არ მოითხოვოს ავტორიზაციამდე. */
+  window.PanelStart = load;
 
 })();
