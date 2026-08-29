@@ -273,6 +273,19 @@ ul { list-style: none; margin: 0; padding: 0; }
   margin-bottom: 18px;
 }
 
+/* ლათინური სახელი სათაურის ზემოთ */
+.hero__latin {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 700;
+  /* ყველაზე ღია ტონი, რომელიც ჯერ კიდევ აკმაყოფილებს
+     კონტრასტის მოთხოვნას ქაღალდისფერ ფონზე (3.03:1) */
+  color: #3f9d8f;
+  letter-spacing: -.005em;
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+
 .hero__title {
   font-size: clamp(3rem, 6.4vw, 5.6rem);
   font-weight: 500;
@@ -453,12 +466,13 @@ ul { list-style: none; margin: 0; padding: 0; }
 /* ბარათის ხატულა — გადაფარებული */
 .card__icon {
   position: absolute;
-  left: 16px; bottom: -22px;
-  width: 46px; height: 46px;
+  /* მთლიანად სურათზე ზის — თეთრ ნაწილს არ ეხება */
+  left: 12px; bottom: 10px;
+  width: 26px; height: 26px;
   border-radius: 50%;
   display: grid; place-items: center;
   color: #fff;
-  box-shadow: 0 3px 10px rgba(35,48,47,.2);
+  box-shadow: 0 2px 6px rgba(35,48,47,.22);
   z-index: 4;
 }
 
@@ -467,7 +481,7 @@ ul { list-style: none; margin: 0; padding: 0; }
   z-index: 1;
   background: var(--surface);
   border-radius: 0 0 var(--r-lg) var(--r-lg);
-  padding: 34px 16px 16px;
+  padding: 18px 16px 16px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -544,8 +558,8 @@ ul { list-style: none; margin: 0; padding: 0; }
 /* --- მარჯვენა მხარე: რესურსები --- */
 .docs__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
   align-items: start;
 }
 
@@ -749,7 +763,7 @@ ul { list-style: none; margin: 0; padding: 0; }
     padding: 38px 34px;
   }
   .docs__text { max-width: none; }
-  .docs__grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .docs__grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .docs__link { padding: 18px 8px; }
 
   .footer__grid { grid-template-columns: repeat(2, 1fr); gap: 36px; }
@@ -779,6 +793,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 
   .hero { padding-top: 26px; padding-bottom: 76px; }
   .hero__title { font-size: clamp(2.6rem, 12.5vw, 3.6rem); }
+  .hero__latin { font-size: clamp(1.25rem, 6vw, 1.6rem); margin-bottom: 4px; }
   .hero__lead::before { width: 26px; }
   .hero__lead { gap: 11px; margin-bottom: 28px; }
   .hero__eyebrow {
@@ -802,14 +817,23 @@ ul { list-style: none; margin: 0; padding: 0; }
   /* ბარათები — 2 სვეტი */
   .cats__panel { padding: 18px; border-radius: var(--r-lg); }
   .cats__grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-  .card__body { padding: 30px 13px 14px; gap: 10px; }
+  .card__body { padding: 15px 13px 14px; gap: 10px; }
   .card__title { font-size: .84rem; }
-  .card__icon { width: 40px; height: 40px; left: 13px; bottom: -19px; }
+  .card__icon { width: 24px; height: 24px; left: 10px; bottom: 9px; }
 
   /* ექიმებისთვის — 2 სვეტი */
   .docs__panel { padding: 30px 22px; border-radius: var(--r-lg); gap: 26px; }
-  .docs__grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-  .docs__link { padding: 18px 10px; gap: 9px; }
+  /* სამი ელემენტი — 2 სვეტში ბოლო მარტო რჩებოდა */
+  .docs__grid { grid-template-columns: 1fr; gap: 4px; }
+  .docs__link {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    padding: 13px 12px;
+    gap: 14px;
+  }
+  .docs__icon { flex-shrink: 0; }
+  .docs__name { min-height: 0; }
   .docs__name { font-size: .86rem; }
   .docs__desc { font-size: .75rem; }
   .docs__icon svg { width: 26px; height: 26px; }
@@ -1689,4 +1713,384 @@ body.is-locked { overflow: hidden; }
 @media (max-width: 620px) {
   .gate__box { padding: 30px 22px; }
   .panel-head__user { display: none; }
+}
+
+
+/* =========================================================
+   15. სტატიების სია — category-*.html
+   ========================================================= */
+.wrap--narrow { max-width: 820px; }
+
+.arts { padding-bottom: 84px; }
+
+.arts__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 22px;
+}
+
+.art {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s;
+}
+.art:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.art:focus-within { box-shadow: var(--shadow-lg); }
+
+.art__link { display: flex; flex-direction: column; height: 100%; }
+
+.art__media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--bg-warm);
+}
+.art__media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .5s cubic-bezier(.4,0,.2,1);
+}
+.art:hover .art__media img { transform: scale(1.04); }
+
+.art__tag {
+  position: absolute;
+  left: 14px; top: 14px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  background: rgba(23,83,79,.92);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  backdrop-filter: blur(4px);
+}
+
+.art__body {
+  padding: 20px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.art__title {
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--teal);
+}
+.art__excerpt {
+  font-size: .87rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+.art__meta {
+  margin-top: auto;
+  padding-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .79rem;
+  color: var(--text-soft);
+}
+.art__author { font-weight: 600; color: var(--text-muted); }
+.art__sep { opacity: .5; }
+
+
+/* =========================================================
+   16. სტატია — article-*.html
+   ========================================================= */
+.post { padding-top: 40px; padding-bottom: 80px; }
+
+.post__kicker {
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  color: var(--coral);
+  margin-bottom: 14px;
+}
+
+.post__title {
+  font-size: clamp(1.7rem, 3.6vw, 2.65rem);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--teal);
+  letter-spacing: -0.015em;
+  margin-bottom: 26px;
+}
+
+/* --- ავტორი --- */
+.post__byline {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 28px;
+}
+.post__avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--bg-warm);
+}
+.post__avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.post__author {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.post__role {
+  font-size: .8rem;
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+
+/* --- გარეკანი --- */
+.post__cover {
+  margin: 0 auto 40px;
+  max-width: 820px;
+  padding-inline: var(--gutter);
+}
+.post__cover img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+}
+
+/* --- ტექსტი --- */
+.post__body { font-size: 1.02rem; line-height: 1.85; color: var(--text); }
+.post__body p { margin-bottom: 20px; }
+
+.post__lead {
+  font-size: 1.12rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  padding-bottom: 8px;
+}
+
+/* კითხვები */
+.post__q {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.55;
+  color: var(--teal);
+  margin: 38px 0 18px;
+  padding-left: 18px;
+  border-left: 3px solid var(--coral);
+}
+
+.post__list {
+  margin: 0 0 20px;
+  padding-left: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.post__list li {
+  position: relative;
+  padding-left: 22px;
+  line-height: 1.75;
+}
+.post__list li::before {
+  content: "";
+  position: absolute;
+  left: 2px; top: .72em;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--teal-light);
+}
+
+/* --- მთავარი გზავნილი --- */
+.post__note {
+  background: var(--bg-warm);
+  border-radius: var(--r-lg);
+  padding: 28px 30px 12px;
+  margin: 44px 0 30px;
+}
+.post__note-title {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--teal);
+  margin-bottom: 14px;
+}
+.post__note p { font-size: .96rem; }
+
+/* ინტერვიუს კრედიტი */
+.post__credit {
+  font-size: .9rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 26px;
+}
+.post__credit strong {
+  font-weight: 600;
+  font-style: normal;
+  color: var(--teal);
+}
+
+.post__disclaimer {
+  font-size: .82rem;
+  line-height: 1.7;
+  color: var(--text-soft);
+  border-top: 1px solid var(--line-soft);
+  padding-top: 20px;
+  margin-bottom: 28px;
+}
+
+.post__back { display: inline-flex; }
+
+
+/* --- რესპონსიული --- */
+@media (max-width: 620px) {
+  .post { padding-top: 22px; padding-bottom: 54px; }
+  .post__body { font-size: .98rem; line-height: 1.8; }
+  .post__lead { font-size: 1.04rem; }
+  .post__q { font-size: 1rem; margin: 30px 0 15px; padding-left: 14px; }
+  .post__note { padding: 22px 20px 8px; margin: 34px 0 24px; }
+  .post__cover { margin-bottom: 28px; }
+  .post__byline { gap: 12px; }
+  .post__avatar { width: 44px; height: 44px; }
+
+  .arts__grid { grid-template-columns: 1fr; gap: 16px; }
+}
+
+
+/* =========================================================
+   17. თეგები და გაზიარება
+   ========================================================= */
+
+/* ---------- თეგები ---------- */
+.tags {
+  border-top: 1px solid var(--line-soft);
+  padding-top: 26px;
+  margin-top: 40px;
+}
+.tags__title {
+  font-family: var(--font-body);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--text-soft);
+  margin-bottom: 14px;
+}
+/* ერთ ხაზზე რჩება; ვიწრო ეკრანზე ჰორიზონტალურად ისრიალებს */
+.tags__list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: -8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  -webkit-overflow-scrolling: touch;
+  /* კიდეში რბილი გადასვლა, რომ ჩანდეს გაგრძელება */
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+          mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+}
+.tags__list::-webkit-scrollbar { height: 5px; }
+.tags__list::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 99px;
+}
+.tags__list::-webkit-scrollbar-track { background: transparent; }
+
+.tags__item {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: 7px 15px;
+  border-radius: 999px;
+  background: var(--bg-warm);
+  border: 1px solid transparent;
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--teal);
+  line-height: 1.4;
+  transition: background .2s, border-color .2s;
+}
+.tags__item:hover { background: #ece0d0; }
+
+/* ---------- გაზიარება ---------- */
+.share {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 26px;
+  padding: 20px 22px;
+  border-radius: var(--r);
+  background: var(--surface-alt);
+  border: 1px solid var(--line-soft);
+}
+.share__label {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-right: auto;
+}
+
+.share__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: .87rem;
+  font-weight: 600;
+  transition: transform .18s cubic-bezier(.4,0,.2,1),
+              box-shadow .18s, background .18s, border-color .18s, color .18s;
+}
+.share__btn:active { transform: translateY(0) scale(.98); }
+
+/* Facebook-ის ფირმისეული ლურჯი */
+.share__btn--fb {
+  background: #1877f2;
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(24,119,242,.3);
+}
+.share__btn--fb:hover {
+  background: #0f6ae0;
+  transform: translateY(-2px);
+  box-shadow: 0 7px 20px rgba(24,119,242,.4);
+}
+.share__btn--fb svg { transition: transform .18s; }
+.share__btn--fb:hover svg { transform: scale(1.12); }
+
+.share__btn--copy {
+  background: var(--surface);
+  color: var(--teal);
+  border: 1.5px solid var(--line);
+}
+.share__btn--copy:hover {
+  border-color: var(--teal-light);
+  color: var(--teal-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* დაკოპირების დადასტურება */
+.share__btn--copy.is-done {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: #fff;
+}
+.share__btn--copy.is-done svg { stroke: #fff; }
+
+@media (max-width: 620px) {
+  .tags { margin-top: 32px; padding-top: 22px; }
+  .tags__item { font-size: .76rem; padding: 6px 13px; }
+
+  .share { gap: 8px; padding: 16px; }
+  .share__label { width: 100%; margin: 0 0 4px; }
+  .share__btn { flex: 1 1 auto; justify-content: center; padding: 12px 14px; font-size: .83rem; }
 }

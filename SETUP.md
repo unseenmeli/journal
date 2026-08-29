@@ -26,12 +26,15 @@ Opening `index.html` directly via `file://` works too, but use the server —
 ```
 index.html        homepage (all content, in Georgian)
 ask.html          კითხვა ექიმს — question form (connected to Supabase)
+category-children.html   ბავშვთა და მოზარდთა ჯანმრთელობა — article listing
+article-pcos.html        PCOS interview with Prof. Elene Asanidze
 questionarySECR.html   private questions panel (unlisted URL, no auth yet)
 css/style.css     design tokens + all styles, numbered sections
 js/main.js        mobile menu, sticky header, scroll reveal
 js/ask.js         form validation + Supabase insert for ask.html
 js/panel.js       questions panel: tabs, search, read-tracking
 js/gate.js        admin login screen for questionarySECR.html
+js/share.js       Facebook share + copy link for articles
 js/config.js      Supabase URL + publishable key
 js/db.js          Supabase data layer — NOT yet wired into index.html
 assets/img/       photos go here (see below)
@@ -387,9 +390,61 @@ first:
 Note that with 1 and 2, the endpoint URL is visible in the page source, so anyone
 could post to it. Add a shared secret and rate limiting if spam becomes an issue.
 
+---
+
+## Facebook share
+
+Each article has a Facebook share button (`js/share.js`) and a tag list at the end.
+
+**How Facebook decides what to show:** it fetches the page at `og:url` and reads the
+`og:` meta tags — not anything the button sends. So two things must be true:
+
+1. **The page must be publicly reachable.** Facebook's crawler cannot see `localhost`,
+   so the image preview will not appear while testing locally. The button still opens
+   the correct share dialog.
+2. **`og:image` and `og:url` must be absolute URLs.** They are currently set to
+   `https://meddialog.ge/...`.
+
+**When the domain is confirmed**, update those two tags in each article's `<head>`.
+If it is not `meddialog.ge`, search and replace:
+
+```bash
+grep -rl 'meddialog.ge' *.html | xargs sed -i '' 's|https://meddialog.ge|https://YOURDOMAIN|g'
+```
+
+**The share image** is `assets/img/art-pcos-share.jpg`, built at Facebook's preferred
+1200×630. The source cover is nearly square, so a straight crop would have cut off the
+MedDialog header and the Georgian caption. Instead the whole cover is fitted onto a
+teal canvas — nothing important is lost. To make one for a new article:
+
+```python
+from PIL import Image
+src = Image.open('cover.jpg').convert('RGB')
+w, h = src.size
+canvas = Image.new('RGB', (1200, 630), (23, 83, 79))   # --teal-dark
+fitted = src.resize((int(w * 630 / h), 630), Image.LANCZOS)
+canvas.paste(fitted, ((1200 - fitted.width) // 2, 0))
+canvas.save('assets/img/art-NAME-share.jpg', quality=88, optimize=True)
+```
+
+After changing an image Facebook keeps the old one cached — clear it with the
+[Sharing Debugger](https://developers.facebook.com/tools/debug/).
+
+The **copy-link** button next to it uses the Clipboard API, which only works over
+HTTPS or on localhost; there is an `execCommand` fallback for older browsers.
+
+**Tags** are plain `<li>` items in `.tags__list`. They sit on one horizontally
+scrolling row rather than wrapping, so a long tag list never pushes the article
+layout around. They are not links yet — when tag archive pages exist, wrap each in
+an `<a>`; the styling already accounts for it.
+
 ## Still to build
 
-- inner pages (ჩვენ შესახებ, სტატიები, ინტერვიუ, კონტაქტი) — `კითხვა ექიმს` is done
+- inner pages (ჩვენ შესახებ, სტატიები, ინტერვიუ, კონტაქტი)
+- category pages for the other five homepage cards — copy `category-children.html`,
+  swap the title/crumb and the article list. Articles follow `article-pcos.html`:
+  `.post__q` for each question, plain `<p>` for answers, `.post__note` for the
+  closing summary.
 - add Supabase Auth before going live (see security note above)
 - the doctors' section (`.docs`) links to `#` — point the four items and the
   "მესტუმრე ექიმებისთვის" button at the professional pages once they exist
