@@ -26,6 +26,7 @@ Opening `index.html` directly via `file://` works too, but use the server —
 ```
 index.html        homepage (all content, in Georgian)
 ask.html          კითხვა ექიმს — question form (connected to Supabase)
+about.html        ჩვენ შესახებ — president's address
 category-children.html   ბავშვთა და მოზარდთა ჯანმრთელობა — article listing
 article-pcos.html        PCOS interview with Prof. Elene Asanidze
 questionarySECR.html   private questions panel (unlisted URL, no auth yet)
@@ -440,7 +441,7 @@ an `<a>`; the styling already accounts for it.
 
 ## Still to build
 
-- inner pages (ჩვენ შესახებ, სტატიები, ინტერვიუ, კონტაქტი)
+- inner pages (სტატიები, ინტერვიუ, კონტაქტი) — `ჩვენ შესახებ` is done
 - category pages for the other five homepage cards — copy `category-children.html`,
   swap the title/crumb and the article list. Articles follow `article-pcos.html`:
   `.post__q` for each question, plain `<p>` for answers, `.post__note` for the
