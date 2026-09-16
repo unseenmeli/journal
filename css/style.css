@@ -1757,12 +1757,13 @@ body.is-locked { overflow: hidden; }
 .art__tag {
   position: absolute;
   left: 14px; top: 14px;
-  padding: 6px 13px;
-  border-radius: 999px;
+  padding: 8px 14px;
+  border-radius: 12px;
   background: rgba(23,83,79,.92);
   color: #fff;
   font-size: .72rem;
   font-weight: 700;
+  line-height: 1.35;
   letter-spacing: .03em;
   backdrop-filter: blur(4px);
 }
