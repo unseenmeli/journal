@@ -403,8 +403,10 @@ Each article has a Facebook share button (`js/share.js`) and a tag list at the e
 1. **The page must be publicly reachable.** Facebook's crawler cannot see `localhost`,
    so the image preview will not appear while testing locally. The button still opens
    the correct share dialog.
-2. **`og:image` and `og:url` must be absolute URLs.** They are currently set to
-   `https://meddialog.ge/...`.
+2. **`og:image` and `og:url` must be absolute URLs.** They are set to
+   `https://www.meddialog.ge/...` — use **www**. Facebook's crawler gets a 403 on the
+   bare `meddialog.ge` (the same deployment works fine on www and on vercel.app), so
+   the bare domain redirects to www in Vercel and every og: URL must point at www.
 
 **When the domain is confirmed**, update those two tags in each article's `<head>`.
 If it is not `meddialog.ge`, search and replace:
