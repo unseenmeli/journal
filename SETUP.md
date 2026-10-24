@@ -29,6 +29,8 @@ ask.html          კითხვა ექიმს — question form (connecte
 about.html        ჩვენ შესახებ — president's address
 category-children.html   ბავშვთა და მოზარდთა ჯანმრთელობა — article listing
 article-pcos.html        PCOS interview with Prof. Elene Asanidze
+category-reproductive-health.html   რეპროდუქციული ჯანმრთელობა — article listing
+article-delayed-motherhood.html     delayed motherhood interview with Prof. Nato Shamugia
 questionarySECR.html   private questions panel (unlisted URL, no auth yet)
 css/style.css     design tokens + all styles, numbered sections
 js/main.js        mobile menu, sticky header, scroll reveal
@@ -444,7 +446,7 @@ an `<a>`; the styling already accounts for it.
 ## Still to build
 
 - inner pages (სტატიები, ინტერვიუ, კონტაქტი) — `ჩვენ შესახებ` is done
-- category pages for the other five homepage cards — copy `category-children.html`,
+- category pages for the other four homepage cards — copy `category-children.html`,
   swap the title/crumb and the article list. Articles follow `article-pcos.html`:
   `.post__q` for each question, plain `<p>` for answers, `.post__note` for the
   closing summary.
